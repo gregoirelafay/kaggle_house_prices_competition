@@ -1,25 +1,12 @@
 # ----------------------------------
-#          INSTALL
+#          MISC
 # ----------------------------------
-install_requirements:
-	@pip install -r requirements.txt
 
 check_code:
 	@flake8 scripts/* kaggle_house_prices_competition/*.py
 
 black:
 	@black scripts/* kaggle_house_prices_competition/*.py
-
-clean:
-	@rm -f */version.txt
-	@rm -f .coverage
-	@rm -fr */__pycache__ */*.pyc __pycache__
-	@rm -fr build dist
-	@rm -fr kaggle_house_prices_competition-*.dist-info
-	@rm -fr kaggle_house_prices_competition.egg-info
-
-install:
-	@pip install . -U
 
 count_lines:
 	@find ./ -name '*.py' -exec  wc -l {} \; | sort -n| awk \
