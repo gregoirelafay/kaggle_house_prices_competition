@@ -6,15 +6,15 @@ Predict sales prices and practice feature engineering, RFs, and gradient boostin
 
 Submissions are evaluated on Root-Mean-Squared-Error (RMSE) between the logarithm of the predicted value and the logarithm of the observed sales price. (Taking logs means that errors in predicting expensive houses and cheap houses will affect the result equally.)
 
-## How to use the trainer package
-
-### Download the Data
+## Download the Data
 
 You can use the makefile to download the data from Kaggle into the raw_data folder.
 
 ```bash
 make download_files
 ```
+
+## How to use the trainer package
 
 ### Import the trainer
 
