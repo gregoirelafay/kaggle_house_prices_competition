@@ -1,74 +1,67 @@
-# Data analysis
-- Document here the project: kaggle_house_prices_competition
-- Description: Project Description
-- Data Source:
-- Type of analysis:
+# House Prices - Advanced Regression Techniques
 
-Please document the project the better you can.
+Predict sales prices and practice feature engineering, RFs, and gradient boosting
 
-# Startup the project
+## Metric
 
-The initial setup.
+Submissions are evaluated on Root-Mean-Squared-Error (RMSE) between the logarithm of the predicted value and the logarithm of the observed sales price. (Taking logs means that errors in predicting expensive houses and cheap houses will affect the result equally.)
 
-Create virtualenv and install the project:
+## How to use the trainer package
+
+### Download the Data
+
+You can use the makefile to download the data from Kaggle into the raw_data folder.
+
 ```bash
-sudo apt-get install virtualenv python-pip python-dev
-deactivate; virtualenv ~/venv ; source ~/venv/bin/activate ;\
-    pip install pip -U; pip install -r requirements.txt
+make download_files
 ```
 
-Unittest test:
-```bash
-make clean install test
+### Import the trainer
+
+First you need to import the trainer.
+
+```py
+# Import
+from houses_trainer.trainer import Trainer
 ```
 
-Check for kaggle_house_prices_competition in gitlab.com/{group}.
-If your project is not set please add it:
+### Initialize the Trainer
 
-- Create a new project on `gitlab.com/{group}/kaggle_house_prices_competition`
-- Then populate it:
+You have to initialize the trainer by choosing a predefined model.
 
-```bash
-##   e.g. if group is "{group}" and project_name is "kaggle_house_prices_competition"
-git remote add origin git@github.com:{group}/kaggle_house_prices_competition.git
-git push -u origin master
-git push -u origin --tags
+```py
+# Instanciate trainer
+trainer_ridge = Trainer(model="ridge")
 ```
 
-Functionnal test with a script:
+### Load Data and build pipeline
 
-```bash
-cd
-mkdir tmp
-cd tmp
-kaggle_house_prices_competition-run
+Then you can load the data and build the pipeline.
+
+```py
+# Load data
+trainer_ridge.load_data()
+# Build Pipeline
+trainer_ridge.build_pipeline(feature_cutoff_percentage=75)
 ```
 
-# Install
+### Cross validate and predict
 
-Go to `https://github.com/{group}/kaggle_house_prices_competition` to see the project, manage issues,
-setup you ssh public key, ...
+Once the pipeline is built, you can cross validate your model, and make a prediction using the test dataset.
+The prediction is saved in a csv file located in the submission folder.
 
-Create a python3 virtualenv and activate it:
-
-```bash
-sudo apt-get install virtualenv python-pip python-dev
-deactivate; virtualenv -ppython3 ~/venv ; source ~/venv/bin/activate
+```py
+# Cross Validate
+trainer_ridge.cross_validate(cv=5)
+# Prediction
+trainer_ridge.predict()
 ```
 
-Clone the project and install it:
+### Submit your results to kaggle
 
-```bash
-git clone git@github.com:{group}/kaggle_house_prices_competition.git
-cd kaggle_house_prices_competition
-pip install -r requirements.txt
-make clean install test                # install and test
-```
-Functionnal test with a script:
+Finally you may submit your results to the Kaggle competition
 
-```bash
-cd
-mkdir tmp
-cd tmp
-kaggle_house_prices_competition-run
+```py
+# Submit results
+trainer_ridge.submit()
 ```

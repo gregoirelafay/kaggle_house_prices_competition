@@ -1,5 +1,5 @@
 # ----------------------------------
-#          INSTALL & TEST
+#          INSTALL
 # ----------------------------------
 install_requirements:
 	@pip install -r requirements.txt
@@ -9,13 +9,6 @@ check_code:
 
 black:
 	@black scripts/* kaggle_house_prices_competition/*.py
-
-test:
-	@coverage run -m pytest tests/*.py
-	@coverage report -m --omit="${VIRTUAL_ENV}/lib/python*"
-
-ftest:
-	@Write me
 
 clean:
 	@rm -f */version.txt
@@ -27,8 +20,6 @@ clean:
 
 install:
 	@pip install . -U
-
-all: clean install test black check_code
 
 count_lines:
 	@find ./ -name '*.py' -exec  wc -l {} \; | sort -n| awk \
@@ -42,14 +33,15 @@ count_lines:
 	@echo ''
 
 # ----------------------------------
-#      UPLOAD PACKAGE TO PYPI
+#      KAGGLE
 # ----------------------------------
-PYPI_USERNAME=<AUTHOR>
-build:
-	@python setup.py sdist bdist_wheel
 
-pypi_test:
-	@twine upload -r testpypi dist/* -u $(PYPI_USERNAME)
+COMPETITION_REF=house-prices-advanced-regression-techniques
 
-pypi:
-	@twine upload dist/* -u $(PYPI_USERNAME)
+list_files:
+	@kaggle competitions files ${COMPETITION_REF}
+
+download_files:
+	@kaggle competitions download -p raw_data/ ${COMPETITION_REF}
+	@unzip "raw_data/*.zip" -d raw_data
+	@find raw_data/ -name "*.zip" -type f -delete
